@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: eda-sba
+  profiles:
+    active: prod
+ # boot:
+ #   admin:
+ #     username: admin
+ #     password: admin
+ #     client:
+ #       metadata:
+ #         user:
+ #           name: client
+ #           password: client
+
+#management:
+#  security:
+#    enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: ALWAYS
+
+--- #prod
+spring:
+  profiles: prod
+
+server:
+  port: 8081
+  servlet:
+    context-path: /eda-sba
+
+logging:
+  config: classpath:logback/logback-spring-prod.xml
