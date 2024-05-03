@@ -2,39 +2,273 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.sonarqube" version "3.4.0.2513"
+    id 'com.palantir.docker' version '0.28.0'
+    id 'maven-publish'
+    id 'project-report'
+    id 'build-dashboard'
+    id 'com.github.jk1.dependency-license-report' version '1.17'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "Java-Service-Tree-Framework-Engine-Fire"
+        property "sonar.host.url", "http://www.313.co.kr/sonar"
+        property "sonar.login", "admin"
+        property "sonar.password", "qwe123"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'war'
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
-group 'kr.co.eda.sba'
-version '1.0-SNAPSHOT'
+javadoc {
+    destinationDir = file("${buildDir}/docs/javadoc")
+}
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+import com.github.jk1.license.render.*
+import com.github.jk1.license.importer.*
 
-test {
-    ignoreFailures = true
-    reports {
-        junitXml.enabled = false
-        html.enabled = true
+licenseReport {
+    // By default this plugin will collect the union of all licenses from
+    // the immediate pom and the parent poms. If your legal team thinks this
+    // is too liberal, you can restrict collected licenses to only include the
+    // those found in the immediate pom file
+    // Defaults to: true
+    //unionParentPomLicenses = false
+
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies. Default is 'runtimeClasspath'
+    // For Android projects use 'releaseRuntimeClasspath' or 'yourFlavorNameReleaseRuntimeClasspath'
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+    configurations = ['runtimeClasspath']
+
+    // List the groups ids to exclude from dependency report. Supports regular expressions.
+    // For finer granularity, see: excludes.
+    excludeGroups = ['do.not.want']
+
+    // List the ids (in module:name format) to exclude from dependency report. Supports regular expressions.
+    // By default excludes is empty.
+    excludes = ['moduleGroup:moduleName']
+
+    // Don't include artifacts of project's own group into the report
+    excludeOwnGroup = true
+
+    // Don't exclude bom dependencies.
+    // If set to true, then all boms will be excluded from the report
+    excludeBoms = false
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    //renderers = [new XmlReportRenderer('third-party-libs.xml', 'Back-End Libraries')]
+    renderers = [new InventoryHtmlReportRenderer("report.html", "Engine")]
+
+    // Set importers to import any external dependency information, i.e. from npm.
+    // Custom importer should implement DependencyDataImporter interface.
+    //importers = [new XmlReportImporter('Frontend dependencies', file(frontend_libs.xml))]
+
+    // This is for the allowed-licenses-file in checkLicense Task
+    // Accepts File, URL or String path to local or remote file
+    allowedLicensesFile = new File("$projectDir/allowed-licenses.json")
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
     }
 }
 
 repositories {
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven {
+        url 'http://www.313.co.kr/nexus/repository/ple-releases/'
+        allowInsecureProtocol true
+    }
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-starter-server
-    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-server', version: '2.7.10'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    testImplementation 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Swagger
+    implementation('io.springfox:springfox-boot-starter:3.0.0')
+    implementation('io.springfox:springfox-swagger-ui:3.0.0')
+    implementation("jakarta.json:jakarta.json-api:2.0.1")
+    implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.73.Final', classifier: 'osx-aarch_64'
+
+    // Slack Notification
+    implementation "com.slack.api:slack-api-client:1.25.1"
+
+}
+
+//https://github.com/gradle/gradle/issues/13656
+class ClearDependencies implements ComponentMetadataRule {
+    @Override
+    void execute(ComponentMetadataContext context) {
+        context.details.allVariants { withDependencies { clear() } }
+    }
+}
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+ext {
+    set('springCloudVersion', "2020.0.5")
+
+    image = "313devgrp/java-service-tree-framework-global-config"
+
+    //향후 릴리즈와 스냅샷을 구분할 때 하기 코드를 사용할 것.
+    //artifactType = System.getenv("ARTIFACT_TYPE") ? System.getenv("ARTIFACT_TYPE").toUpperCase() : "SNAPSHOT"
+    //repositoryType = "${artifactType}".equalsIgnoreCase("RELEASE") ? "release" : "snapshot"
+    //업로드 타입 정의 ( maven-release, maven-snapshot, ${repositoryType})
+    repositoryUrl = "http://www.313.co.kr/nexus/repository/ple-releases/"
+    metadataUrl = "${repositoryUrl}313devgrp/Java-Service-Tree-Framework-Global-Config/maven-metadata.xml"
+
+    //version 정보
+    majorVersion = 24
+    minorVersion = 05
+    //patchVersion = auto generation
+
+    //mac 사용자 아래 114까지 주석처리!!
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        println "*** Windows is not support build "
+    }else {
+        exec {
+            executable "wget"
+            args "-O", "${projectDir}/metadata.xml", "${metadataUrl}"
+        }
+    }
+    def metadataFile = new XmlSlurper().parse(new File("${projectDir}/metadata.xml"))
+    String latest = metadataFile."versioning"."latest"
+    String versionPrefix = latest.split("-")[0]
+    def (latestMajorVersion, latestMinorVersion, latestPatchVersion) = versionPrefix.tokenize(".")
+    if ( majorVersion > latestMajorVersion.toInteger()){
+        minorVersion = 0
+        patchVersion = 0
+    } else if (minorVersion > latestMinorVersion.toInteger()){
+        patchVersion = 0
+    } else {
+        patchVersion = latestPatchVersion.toInteger() + 1
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task printVersion(){
+    doLast {
+        println bootJar.version
+    }
+}
+
+group = "313devgrp"
+version = "${majorVersion}.${minorVersion}.${patchVersion}"
+
+bootJar {
+    baseName = project.name
+    version =  project.version
+}
+
+task generatePublishInfo {
+    def targetFile = new File("${projectDir}/spinnaker.properties")
+    targetFile.parentFile.mkdirs()
+    targetFile.withWriter("UTF-8") { w ->
+        w.writeLine "groupId = " + project.group
+        w.writeLine "artifactId = " + project.name
+        w.writeLine "version = " + project.version
+    }
+}
+
+publish {
+    dependsOn generatePublishInfo
+}
+
+def getMavenSettingsCredentials = {
+    String userHome = System.getProperty("user.home")
+    File mavenSettings = new File ( userHome, ".m2/settings.xml")
+
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        if(!mavenSettings.exists()){
+            mavenSettings = new File("${projectDir}/settings.xml")
+        }
+    }else {
+        if(!mavenSettings.exists()){
+            mavenSettings = new File ("${projectDir}/settings.xml")
+        }
+    }
+    def xmlSlurper = new XmlSlurper()
+    def output = xmlSlurper.parse(mavenSettings)
+    return output."servers"."server"
+}
+
+def getCredentials = {
+    def entries = getMavenSettingsCredentials()
+
+    for ( entry in entries ) {
+        if (project.version.endsWith("-SNAPSHOT") && entry."id".text() == "snapshots"){
+            return [username: entry.username.text(), password: entry.password.text()]
+        }else {
+            return [username: entry.username.text(), password: entry.password.text()]
+        }
+    }
+}
+
+publishing {
+    def mvnCredential = getCredentials()
+    repositories {
+        maven {
+            credentials{
+                username mvnCredential["username"]
+                password mvnCredential["password"]
+            }
+            url "${repositoryUrl}"
+            allowInsecureProtocol true
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            artifact bootJar
+        }
+    }
+}
+
+docker {
+    name "313.co.kr:5550/${image}:${project.version}"
+    noCache true
+    tags "${project.version}"
+    files tasks.bootJar.outputs.files, 'docker-entrypoint.sh'
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name, 'ENTRY_FILE': 'docker-entrypoint.sh'])
 }
