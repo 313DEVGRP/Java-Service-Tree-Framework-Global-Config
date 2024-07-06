@@ -27,7 +27,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/server_info_backup", method = RequestMethod.GET)
     @ResponseBody
-    public Iterable<서버정보_엔티티> 서버정보백업_스케줄러(ServerWebExchange exchange){
+    public Iterable<서버정보_엔티티> 서버정보백업_스케줄러(){
 
         logger.info("[ 암스스케쥴러 :: 서버정보백업_스케줄러 ] 동작 : {}", Calendar.getInstance().getTime());
         Iterable<서버정보_엔티티> 결과 = 엔진통신기.서버정보백업_스케줄러();
@@ -36,7 +36,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/jiraissue_index_backup", method = RequestMethod.GET)
     @ResponseBody
-    public boolean 지라이슈_인덱스백업(ServerWebExchange exchange) {
+    public boolean 지라이슈_인덱스백업() {
 
         logger.info("[ 암스스케쥴러 :: 지라이슈_인덱스백업 ] 동작 : {}", Calendar.getInstance().getTime());
         boolean 결과 = 엔진통신기.지라이슈_인덱스백업();
@@ -45,7 +45,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/reqissue_es_store", method = RequestMethod.GET)
     @ResponseBody
-    public String 각_제품서비스_별_요구사항이슈_조회_및_ES저장(ServerWebExchange exchange) {
+    public String 각_제품서비스_별_요구사항이슈_조회_및_ES저장() {
 
         logger.info("[ 암스스케쥴러 :: 각_제품서비스_별_요구사항이슈_조회_및_ES저장 ] 동작 : {}", Calendar.getInstance().getTime());
         String 결과 = 백엔드코어통신기.각_제품서비스_별_요구사항이슈_조회_및_ES저장();
@@ -54,7 +54,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/increment/reqissue_es_store", method = RequestMethod.GET)
     @ResponseBody
-    public String 각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장(ServerWebExchange exchange) {
+    public String 각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장() {
         long 시작시간 = System.currentTimeMillis();
 
         logger.info("[ 암스스케쥴러 :: 각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장 ] 동작 : {}", Calendar.getInstance().getTime());

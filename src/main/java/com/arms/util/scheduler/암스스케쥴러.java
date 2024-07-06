@@ -1,15 +1,16 @@
 package com.arms.util.scheduler;
 
+import com.arms.util.slack.SlackNotificationService;
+import com.arms.util.slack.SlackProperty;
 import com.arms.util.aspect.LogAndSlackNotify;
 import com.arms.util.external_communicate.*;
 import com.arms.util.external_communicate.vo.서버정보_엔티티;
-import com.arms.util.slack.SlackNotificationService;
-import com.arms.util.slack.SlackProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.Calendar;
 
@@ -56,7 +57,7 @@ public class 암스스케쥴러 {
     }
 
     @LogAndSlackNotify
-    @Scheduled(cron="0 0 3 * * *") // 매일 오전 03(새벽)시에 실행
+    @Scheduled(cron="0 35 23 * * *") // 매일 오전 03(새벽)시에 실행
     @Async
     public void 각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장() {
         String 결과 = 내부통신기.각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장();
@@ -64,7 +65,7 @@ public class 암스스케쥴러 {
     }
 
     @LogAndSlackNotify
-    @Scheduled(cron="0 10 16 * * *") // 매일 오전 06(새벽)시에 실행
+    @Scheduled(cron="0 0 6 * * *") // 매일 오전 06(새벽)시에 실행
     @Async
     public void 각_제품서비스_별_요구사항_Status_업데이트_From_ES() {
         String 결과 = 내부통신기.각_제품서비스_별_요구사항_Status_업데이트_From_ES();
@@ -79,8 +80,7 @@ public class 암스스케쥴러 {
     }
 
     @LogAndSlackNotify
-    @Scheduled(cron="0 45 14 * * *") // 매일 09, 12,시, 15시, 18시, 21시 동작
-//    @Scheduled(cron="0 0 9,12,15,18,21 * * *")// 매일 09, 12,시, 15시, 18시, 21시 동작
+    @Scheduled(cron="0 0 9,12,15,18,21 * * *")// 매일 09, 12,시, 15시, 18시, 21시 동작
     @Async
     public void 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성() {
         String 결과 = 내부통신기.각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성();
