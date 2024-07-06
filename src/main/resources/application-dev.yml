@@ -1,10 +1,7 @@
 spring:
-  config:
-    active:
-      on-profile: dev
   cloud:
     config:
       server:
         git:
-          uri: https://github:com/313DEVGRP/Java-Service-Tree-Framework-Global-Config
+          uri: https://github.com/313devops/Archive-Java-Service-Tree-Framework-Backend-Server
 
