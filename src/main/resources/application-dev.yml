@@ -3,7 +3,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/313devops/Archive-Java-Service-Tree-Framework-Backend-Server
+          uri: http://127.0.0.1:31313
 
 arms:
   backend:

@@ -3,7 +3,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github:com/313DEVGRP/Java-Service-Tree-Framework-Global-Config
+          uri: http://backend-core:31313
 
 arms:
   backend:
