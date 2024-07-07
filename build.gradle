@@ -34,12 +34,6 @@ javadoc {
     destinationDir = file("${buildDir}/docs/javadoc")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.0"
-    }
-}
-
 import com.github.jk1.license.render.*
 import com.github.jk1.license.importer.*
 
@@ -83,7 +77,7 @@ licenseReport {
     // Set custom report renderer, implementing ReportRenderer.
     // Yes, you can write your own to support any format necessary.
     //renderers = [new XmlReportRenderer('third-party-libs.xml', 'Back-End Libraries')]
-    renderers = [new InventoryHtmlReportRenderer("report.html", "Engine")]
+    renderers = [new InventoryHtmlReportRenderer("report.html", "Config")]
 
     // Set importers to import any external dependency information, i.e. from npm.
     // Custom importer should implement DependencyDataImporter interface.
@@ -92,6 +86,12 @@ licenseReport {
     // This is for the allowed-licenses-file in checkLicense Task
     // Accepts File, URL or String path to local or remote file
     allowedLicensesFile = new File("$projectDir/allowed-licenses.json")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.0"
+    }
 }
 
 configurations {
@@ -107,7 +107,6 @@ repositories {
         allowInsecureProtocol true
     }
 }
-
 
 class ClearDependencies implements ComponentMetadataRule {
     @Override
@@ -166,8 +165,6 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
-
-
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
