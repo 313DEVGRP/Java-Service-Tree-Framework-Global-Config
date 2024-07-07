@@ -38,13 +38,13 @@ under the License.
  |
  |                 -gs /path/to/global/settings.xml
  |
- | The sections in this sample file are intended to give you a running start at
+ | The sections in this example file are intended to give you a running start at
  | getting the most out of your Maven installation. Where appropriate, the default
  | values (values used when the setting is not specified) are provided.
  |
  |-->
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <!-- localRepository
    | The path to the local repository maven will use to store artifacts.
@@ -84,23 +84,23 @@ under the License.
 
   <!-- proxies
    | This is a list of proxies which can be used on this machine to connect to the network.
-   | Unless otherwise specified (by system property or command-line switch), the first com.proxy
+   | Unless otherwise specified (by system property or command-line switch), the first proxy
    | specification in this list marked as active will be used.
    |-->
   <proxies>
-    <!-- com.proxy
-     | Specification for one com.proxy, to be used in connecting to the network.
+    <!-- proxy
+     | Specification for one proxy, to be used in connecting to the network.
      |
-    <com.proxy>
+    <proxy>
       <id>optional</id>
       <active>true</active>
       <protocol>http</protocol>
       <username>proxyuser</username>
       <password>proxypass</password>
-      <host>com.proxy.host.net</host>
+      <host>proxy.host.net</host>
       <port>80</port>
       <nonProxyHosts>local.net|some.host.com</nonProxyHosts>
-    </com.proxy>
+    </proxy>
     -->
   </proxies>
 
@@ -112,8 +112,8 @@ under the License.
     <!-- server
      | Specifies the authentication information to use when connecting to a particular server, identified by
      | a unique name within the system (referred to by the 'id' attribute below).
-     | 
-     | NOTE: You should either specify username/password OR privateKey/passphrase, since these pairings are 
+     |
+     | NOTE: You should either specify username/password OR privateKey/passphrase, since these pairings are
      |       used together.
      |
     <server>
@@ -122,30 +122,36 @@ under the License.
       <password>repopwd</password>
     </server>
     -->
-    
-    <!-- Another sample, using keys to authenticate.-->
+
+    <!-- Another example, using keys to authenticate.-->
     <server>
-      <id>snapshots</id>
+      <id>ple-releases</id>
       <username>admin</username>
-      <password>test</password>
+      <password>qwe123</password>
+      <configuration>
+        <email>313@313.co.kr</email>
+      </configuration>
     </server>
     <server>
-      <id>releases</id>
+      <id>jstf-releases</id>
       <username>admin</username>
-      <password>test</password>
+      <password>qwe123</password>
+      <configuration>
+        <email>313@313.co.kr</email>
+      </configuration>
     </server>
-    
+
   </servers>
 
   <!-- mirrors
    | This is a list of mirrors to be used in downloading artifacts from remote repositories.
-   | 
+   |
    | It works like this: a POM may declare a repository to use in resolving certain artifacts.
    | However, this repository may have problems with heavy traffic at times, so people have mirrored
    | it to several places.
    |
    | That repository definition will have a unique id, so we can create a mirror reference for that
-   | repository, to be used as an alternate download site. The mirror site will be the preferred 
+   | repository, to be used as an alternate download site. The mirror site will be the preferred
    | server for that repository.
    |-->
   <mirrors>
@@ -162,7 +168,7 @@ under the License.
     </mirror>
      -->
   </mirrors>
-  
+
   <!-- profiles
    | This is a list of profiles which can be activated in a variety of ways, and which can modify
    | the build process. Profiles provided in the settings.xml are intended to provide local machine-
