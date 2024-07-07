@@ -33,8 +33,3 @@ server:
 logging:
   config: classpath:logback/logback-${spring.profiles.active}.xml
 
-arms:
-  backend:
-    url: http://127.0.0.1:31313
-  engine:
-    url: http://127.0.0.1:33333

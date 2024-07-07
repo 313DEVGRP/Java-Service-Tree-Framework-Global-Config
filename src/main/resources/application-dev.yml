@@ -5,3 +5,10 @@ spring:
         git:
           uri: https://github.com/313devops/Archive-Java-Service-Tree-Framework-Backend-Server
 
+arms:
+  backend:
+    url: http://backend-core:31313
+  engine:
+    url: http://engine-fire:33333
+  local:
+    url: http://127.0.0.1:33133

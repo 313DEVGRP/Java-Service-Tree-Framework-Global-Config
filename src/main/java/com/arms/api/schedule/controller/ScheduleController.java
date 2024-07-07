@@ -70,7 +70,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/issue_es_load", method = RequestMethod.GET)
     @ResponseBody
-    public String 각_제품서비스_별_요구사항_Status_업데이트_From_ES(ServerWebExchange exchange) {
+    public String 각_제품서비스_별_요구사항_Status_업데이트_From_ES() {
 
         logger.info("[ 암스스케쥴러 :: 각_제품서비스_별_요구사항_Status_업데이트_From_ES ] 동작 : {}", Calendar.getInstance().getTime());
         String 결과 = 백엔드코어통신기.각_제품서비스_별_요구사항_Status_업데이트_From_ES();
@@ -79,7 +79,7 @@ public class ScheduleController {
 
     @RequestMapping(value = "/auth-sche/schedule/recreate_failed_reqissue", method = RequestMethod.GET)
     @ResponseBody
-    public String 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성(ServerWebExchange exchange) {
+    public String 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성() {
 
         logger.info("[ 암스스케쥴러 :: 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성 ] 동작 : {}", Calendar.getInstance().getTime());
         String 결과 = 백엔드코어통신기.각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성();

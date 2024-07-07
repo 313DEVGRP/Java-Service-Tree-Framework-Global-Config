@@ -5,3 +5,10 @@ spring:
         git:
           uri: https://github:com/313DEVGRP/Java-Service-Tree-Framework-Global-Config
 
+arms:
+  backend:
+    url: http://127.0.0.1:31313
+  engine:
+    url: http://127.0.0.1:33333
+  local:
+    url: http://127.0.0.1:33133

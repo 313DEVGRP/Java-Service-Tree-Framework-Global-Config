@@ -4,7 +4,7 @@ import com.arms.util.external_communicate.vo.서버정보_엔티티;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "loopback", url = "http://127.0.0.1:13131")
+@FeignClient(name = "loopback", url = "${arms.local.url}")
 public interface 내부통신기 {
 
     @GetMapping("/auth-sche/schedule/server_info_backup")
