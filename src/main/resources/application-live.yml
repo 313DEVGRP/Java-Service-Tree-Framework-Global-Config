@@ -7,8 +7,9 @@ spring:
 
 arms:
   backend:
-    url: http://127.0.0.1:31313
+    url: http://backend-core:31313
   engine:
-    url: http://127.0.0.1:33333
+    url: http://engine-fire:33333
   local:
     url: http://127.0.0.1:33133
+
