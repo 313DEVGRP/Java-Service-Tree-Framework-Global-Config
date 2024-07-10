@@ -13,3 +13,9 @@ arms:
   local:
     url: http://127.0.0.1:33133
 
+slack:
+  service-name: ${spring.application.name}
+  token: xoxb-6506875664277-6522692878945-HskjLlwVilRWrFqfWdyI2E4y
+  profile: ${spring.profiles.active}
+  url: https://slack.com/
+
