@@ -57,7 +57,7 @@ public class 암스스케쥴러 {
     }
 
     @LogAndSlackNotify
-    @Scheduled(cron="0 35 23 * * *") // 매일 오전 03(새벽)시에 실행
+    @Scheduled(cron="0 0 3 * * *") // 매일 오전 03(새벽)시에 실행
     @Async
     public void 각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장() {
         String 결과 = 내부통신기.각_제품서비스_별_요구사항_증분이슈_조회_및_ES저장();
