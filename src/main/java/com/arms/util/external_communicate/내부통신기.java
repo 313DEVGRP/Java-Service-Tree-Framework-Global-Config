@@ -25,4 +25,7 @@ public interface 내부통신기 {
     @GetMapping("/auth-sche/schedule/recreate_failed_reqissue")
     String 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성();
 
+    @GetMapping("/auth-sche/schedule/delete_es_document")
+    int 삭제된_ALM_이슈_Document_삭제();
+
 }

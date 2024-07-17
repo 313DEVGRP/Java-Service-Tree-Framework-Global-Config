@@ -2,6 +2,7 @@ package com.arms.util.external_communicate;
 
 import com.arms.util.external_communicate.vo.서버정보_엔티티;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,4 +17,7 @@ public interface 엔진통신기 {
 
     @GetMapping("/engine/connection/keep-alive")
     void 커넥션_상태_유지();
+
+    @DeleteMapping("/engine/jira/0/issue/documents")
+    int 삭제된_ALM_이슈_Document_삭제();
 }

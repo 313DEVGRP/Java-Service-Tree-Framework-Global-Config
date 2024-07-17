@@ -86,6 +86,15 @@ public class ScheduleController {
         return 결과;
     }
 
+    @RequestMapping(value = "/auth-sche/schedule/delete_es_document", method = RequestMethod.GET)
+    @ResponseBody
+    public int 삭제된_ALM_이슈_Document_삭제() {
+
+        logger.info("[ 암스스케쥴러 :: 삭제된_ALM_이슈_Document_삭제 ] 동작 : {}", Calendar.getInstance().getTime());
+        int 결과 = 엔진통신기.삭제된_ALM_이슈_Document_삭제();
+        return 결과;
+    }
+
     @Data
     public static class DTO{
         private String key;

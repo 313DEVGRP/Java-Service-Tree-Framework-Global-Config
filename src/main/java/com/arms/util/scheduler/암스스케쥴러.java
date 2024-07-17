@@ -65,6 +65,14 @@ public class 암스스케쥴러 {
     }
 
     @LogAndSlackNotify
+    @Scheduled(cron="0 0 5 * * *") // 매일 오전 05(새벽)시에 실행
+    @Async
+    public void ALM에서_삭제된데이터_ES도큐먼트삭제() {
+        int 결과 = 내부통신기.삭제된_ALM_이슈_Document_삭제();
+        log.info(String.valueOf(결과));
+    }
+
+    @LogAndSlackNotify
     @Scheduled(cron="0 0 6 * * *") // 매일 오전 06(새벽)시에 실행
     @Async
     public void 각_제품서비스_별_요구사항_Status_업데이트_From_ES() {
