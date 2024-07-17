@@ -11,24 +11,21 @@ import lombok.Setter;
 public class SlackMessageDTO {
 
     private String title;
-    private String titleLink;
-    private String authorName;
-    private String text;
     private String footer;
+    private String footerIcon;
+
 
     @Builder
-    private SlackMessageDTO(String title, String titleLink, String authorName, String text, String footer) {
+    private SlackMessageDTO(String title, String footer, String footerIcon) {
         this.title = title;
-        this.titleLink = titleLink;
-        this.authorName = authorName;
-        this.text = text;
         this.footer = footer;
+        this.footerIcon = footerIcon;
     }
 
-    public Attachment parseAttachment() {
 
-        return Attachment.builder().title(this.title).titleLink(this.titleLink).authorName(this.authorName)
-                .text(this.text).footer(footer).build();
+    public Attachment parseAttachment(String text) {
+        return Attachment.builder().title(this.title).text(text).fallback(text).footer(this.footer)
+                .footerIcon(this.footerIcon).build();
     }
-
 }
+
