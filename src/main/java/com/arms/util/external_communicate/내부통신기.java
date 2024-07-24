@@ -28,4 +28,7 @@ public interface 내부통신기 {
     @GetMapping("/auth-sche/schedule/delete_es_document")
     int 삭제된_ALM_이슈_Document_삭제();
 
+    @GetMapping("/auth-sche/schedule/update_upperkey_field")
+    String 서브테스크_상위키_필드업데이트();
+
 }

@@ -94,4 +94,15 @@ public class 암스스케쥴러 {
         String 결과 = 내부통신기.각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성();
         log.info(결과);
     }
+
+    /*
+    *  하위 이슈 도큐먼트에 upperkey 필드 추가
+    * */
+    @LogAndSlackNotify
+    @Async
+    public void 서브테스크_상위키_필드업데이트() {
+        String 결과 = 내부통신기.서브테스크_상위키_필드업데이트();
+        log.info(결과);
+    }
+
 }

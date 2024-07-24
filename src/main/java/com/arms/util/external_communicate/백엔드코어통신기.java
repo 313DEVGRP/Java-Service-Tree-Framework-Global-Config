@@ -17,4 +17,7 @@ public interface 백엔드코어통신기 {
 
     @GetMapping("/arms/scheduler/pdservice/reqstatus/recreateFailedReqIssue")
     String 각_제품서비스_별_생성실패한_ALM_요구사항_이슈_재생성();
+
+    @GetMapping("/arms/scheduler/pdservice/reqstatus/updateUpperKeyField")
+    String 서브테스크_상위키_필드업데이트();
 }

@@ -95,6 +95,15 @@ public class ScheduleController {
         return 결과;
     }
 
+    @RequestMapping(value = "/auth-sche/schedule/update_upperkey_field", method = RequestMethod.GET)
+    @ResponseBody
+    public String 서브테스크_상위키_필드업데이트() {
+
+        logger.info("[ 암스스케쥴러 :: 서브테스크_상위키_필드업데이트 ] 동작 : {}", Calendar.getInstance().getTime());
+        String 결과 = 백엔드코어통신기.서브테스크_상위키_필드업데이트();
+        return 결과;
+    }
+
     @Data
     public static class DTO{
         private String key;
