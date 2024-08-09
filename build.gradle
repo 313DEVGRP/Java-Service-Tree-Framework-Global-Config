@@ -131,7 +131,7 @@ ext {
 
     //version 정보
     majorVersion = 24
-    minorVersion = 07
+    minorVersion = 8
     //patchVersion = auto generation
 
 
